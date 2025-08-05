@@ -19,6 +19,9 @@ export class Profile {
   @Column({ nullable: true })
   email?: string;
 
+  @Column()
+  password?: string;
+
   @Column({ default: 'user' })
   role: 'admin' | 'user';
 

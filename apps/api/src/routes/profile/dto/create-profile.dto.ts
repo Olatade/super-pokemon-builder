@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsOptional } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsIn } from 'class-validator';
 
 export class CreateProfileDto {
   @IsString()
@@ -7,4 +7,11 @@ export class CreateProfileDto {
   @IsOptional()
   @IsEmail()
   email?: string;
+
+  @IsString()
+  password?: string;
+
+  @IsOptional()
+  @IsIn(['admin', 'user'])
+  role?: 'admin' | 'user';
 }

@@ -31,4 +31,13 @@ export class ProfileService {
     await this.findOne(id); // throws if not found
     return this.profilesRepo.delete(id);
   }
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.profilesRepo.findByUsername(username);
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
 }

@@ -3,6 +3,7 @@
     "id": "1a2b3c4d-0001-0000-0000-000000000001",
     "username": "admin_alpha",
     "email": "alpha@admin.com",
+    "password": "alpha@admin.com",
     "role": "admin",
     "created_at": "2025-08-02T03:15:23.000Z"
   },
@@ -10,6 +11,7 @@
     "id": "1a2b3c4d-0002-0000-0000-000000000002",
     "username": "admin_beta",
     "email": "beta@admin.com",
+    "password": "beta@admin.com",
     "role": "admin",
     "created_at": "2025-08-03T16:42:10.000Z"
   },
@@ -17,6 +19,7 @@
     "id": "1a2b3c4d-0003-0000-0000-000000000003",
     "username": "admin_gamma",
     "email": "gamma@admin.com",
+    "password": "gamma@admin.com",
     "role": "admin",
     "created_at": "2025-08-01T08:27:49.000Z"
   },
@@ -24,6 +27,7 @@
     "id": "1a2b3c4d-0004-0000-0000-000000000004",
     "username": "admin_delta",
     "email": "delta@admin.com",
+    "password": "delta@admin.com",
     "role": "admin",
     "created_at": "2025-08-04T11:59:33.000Z"
   },
@@ -31,6 +35,7 @@
     "id": "2b3c4d5e-0005-0000-0000-000000000005",
     "username": "user_omega",
     "email": "omega@user.com",
+    "password": "omega@user.com",
     "role": "user",
     "created_at": "2025-08-01T22:05:01.000Z"
   },
@@ -38,6 +43,7 @@
     "id": "2b3c4d5e-0006-0000-0000-000000000006",
     "username": "user_sigma",
     "email": "sigma@user.com",
+    "password": "sigma@user.com",
     "role": "user",
     "created_at": "2025-08-03T01:38:17.000Z"
   },
@@ -45,6 +51,7 @@
     "id": "2b3c4d5e-0007-0000-0000-000000000007",
     "username": "user_theta",
     "email": "theta@user.com",
+    "password": "theta@user.com",
     "role": "user",
     "created_at": "2025-08-02T19:14:05.000Z"
   },
@@ -52,6 +59,7 @@
     "id": "2b3c4d5e-0008-0000-0000-000000000008",
     "username": "user_lambda",
     "email": "lambda@user.com",
+    "password": "lambda@user.com",
     "role": "user",
     "created_at": "2025-08-04T06:20:42.000Z"
   }

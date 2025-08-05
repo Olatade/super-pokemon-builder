@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfileModule } from '../routes/profile/profile.module';
+import { PokemonModule } from '../routes/pokemon/pokemon.module';
 import { Profile } from '../libs/database/entities/profile.entity';
 import { ProfilePokemon } from '../libs/database/entities/profile-pokemon.entity';
 import { Pokemon } from '../libs/database/entities/pokemon.entity';
@@ -10,6 +12,7 @@ import { PokemonAbility } from '../libs/database/entities/pokemon-ability.entity
 import { PokemonType } from '../libs/database/entities/pokemon-type.entity';
 import { TeamPokemon } from '../libs/database/entities/team-pokemon.entity';
 import { Team } from '../libs/database/entities/team.entity';
+import { AuthGuard } from '../libs/guards/auth.guard';
 
 @Module({
   imports: [
@@ -33,8 +36,15 @@ import { Team } from '../libs/database/entities/team.entity';
       ],
     }),
     ProfileModule,
+    PokemonModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

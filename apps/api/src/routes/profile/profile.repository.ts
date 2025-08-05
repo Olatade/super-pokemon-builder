@@ -8,5 +8,7 @@ export class ProfileRepository extends AbstractRepository<Profile> {
     super(dataSource, Profile);
   }
 
-  // You can add Profile-specific methods here if needed later.
+  async findByUsername(username: string): Promise<Profile | undefined> {
+    return this.repository.findOne({ where: { username } });
+  }
 }
