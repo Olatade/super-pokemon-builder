@@ -22,6 +22,7 @@ export class Team {
 
   @ManyToOne(() => Profile, (profile) => profile.teams, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   @JoinColumn({ name: 'profile_id' })
   profile: Profile;

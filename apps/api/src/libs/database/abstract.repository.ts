@@ -64,8 +64,11 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
     };
   }
 
-  async findById(id: any): Promise<T | null> {
-    return this.repository.findOne({ where: { id } as unknown as Partial<T> });
+  async findById(id: any, relations: string[] = []): Promise<T | null> {
+    return this.repository.findOne({
+      where: { id } as unknown as Partial<T>,
+      relations,
+    });
   }
 
   async create(data: import('typeorm').DeepPartial<T>): Promise<T> {
@@ -80,5 +83,9 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
 
   async delete(id: number | string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async save(entity: T): Promise<T> {
+    return await this.repository.save(entity);
   }
 }

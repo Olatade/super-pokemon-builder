@@ -1,0 +1,778 @@
+{
+  "info": {
+    "_postman_id": "YOUR_POSTMAN_COLLECTION_ID",
+    "name": "Super Pokemon Builder API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Admin Endpoints",
+      "item": [
+        {
+          "name": "Get Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/admin/stats",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "stats"
+              ]
+            },
+            "description": "Retrieves application statistics. Requires 'admin' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Teams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/admin/teams?limit=10&offset=0",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "admin",
+                "teams"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Number of teams to return"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Offset for pagination"
+                }
+              ]
+            },
+            "description": "Retrieves all teams with pagination. Requires 'admin' role."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pokemon Endpoints",
+      "item": [
+        {
+          "name": "Create Pokemon",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pikachu\",\n  \"image_url\": \"http://example.com/pikachu.png\",\n  \"category\": \"Mouse Pokemon\",\n  \"height\": 0.4,\n  \"weight\": 6\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/pokemon",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pokemon"
+              ]
+            },
+            "description": "Creates a new Pokemon. Requires 'admin' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Pokemon",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/pokemon?name=Pikachu",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pokemon"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Pikachu",
+                  "description": "Filter by Pokemon name (optional)"
+                }
+              ]
+            },
+            "description": "Retrieves all Pokemon with optional filtering. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pokemon by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/pokemon/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pokemon",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "POKEMON_ID",
+                  "description": "ID of the Pokemon to retrieve"
+                }
+              ]
+            },
+            "description": "Retrieves a single Pokemon by ID. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Pokemon",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Raichu\",\n  \"height\": 0.8\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/pokemon/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pokemon",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "POKEMON_ID",
+                  "description": "ID of the Pokemon to update"
+                }
+              ]
+            },
+            "description": "Updates an existing Pokemon. Requires 'admin' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Pokemon",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/pokemon/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "pokemon",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "POKEMON_ID",
+                  "description": "ID of the Pokemon to delete"
+                }
+              ]
+            },
+            "description": "Deletes a Pokemon. Requires 'admin' role."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile Endpoints",
+      "item": [
+        {
+          "name": "Create Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword123\",\n  \"role\": \"user\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "profile"
+              ]
+            },
+            "description": "Creates a new user profile. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Profiles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_ADMIN_TOKEN",
+                "type": "text",
+                "description": "Admin role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/profile?username=john_doe",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "profile"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "john_doe",
+                  "description": "Filter by username (optional)"
+                }
+              ]
+            },
+            "description": "Retrieves all user profiles with optional filtering. Requires 'admin' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required (user can only view their own profile)"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/profile/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "profile",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PROFILE_ID",
+                  "description": "ID of the profile to retrieve"
+                }
+              ]
+            },
+            "description": "Retrieves a single user profile by ID. User role can only view their own profile."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required (user can only update their own profile)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"new.email@example.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/profile/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "profile",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PROFILE_ID",
+                  "description": "ID of the profile to update"
+                }
+              ]
+            },
+            "description": "Updates an existing user profile. User role can only update their own profile."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required (user can only delete their own profile)"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/profile/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "profile",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "PROFILE_ID",
+                  "description": "ID of the profile to delete"
+                }
+              ]
+            },
+            "description": "Deletes a user profile. User role can only delete their own profile."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Team Endpoints",
+      "item": [
+        {
+          "name": "Get Teams by Profile ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/team",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team"
+              ]
+            },
+            "description": "Retrieves all teams associated with the authenticated user's profile. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"profile_id\": \"PROFILE_ID\",\n  \"name\": \"My Awesome Team\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/team",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team"
+              ]
+            },
+            "description": "Creates a new team for the authenticated user's profile. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Team by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/team/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team to retrieve"
+                }
+              ]
+            },
+            "description": "Retrieves a single team by ID. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Team",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Updated Team Name\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/team/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team to update"
+                }
+              ]
+            },
+            "description": "Updates an existing team. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Team",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/team/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team to delete"
+                }
+              ]
+            },
+            "description": "Deletes a team. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pokemons in Team",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/team/:teamId/pokemon",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":teamId",
+                "pokemon"
+              ],
+              "variable": [
+                {
+                  "key": "teamId",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team"
+                }
+              ]
+            },
+            "description": "Retrieves all Pokemon in a specific team. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Pokemon to Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pokemon_id\": \"POKEMON_ID_TO_ADD\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/team/:teamId/pokemon",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":teamId",
+                "pokemon"
+              ],
+              "variable": [
+                {
+                  "key": "teamId",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team"
+                }
+              ]
+            },
+            "description": "Adds a Pokemon to a specific team. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Pokemon from Team",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_TOKEN",
+                "type": "text",
+                "description": "Admin or User role required"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/team/:teamId/pokemon/:pokemonId",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "team",
+                ":teamId",
+                "pokemon",
+                ":pokemonId"
+              ],
+              "variable": [
+                {
+                  "key": "teamId",
+                  "value": "TEAM_ID",
+                  "description": "ID of the team"
+                },
+                {
+                  "key": "pokemonId",
+                  "value": "POKEMON_ID_TO_REMOVE",
+                  "description": "ID of the Pokemon to remove"
+                }
+              ]
+            },
+            "description": "Removes a Pokemon from a specific team. Requires 'admin' or 'user' role."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

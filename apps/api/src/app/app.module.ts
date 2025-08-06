@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfileModule } from '../routes/profile/profile.module';
 import { PokemonModule } from '../routes/pokemon/pokemon.module';
+import { TeamModule } from '../routes/team/team.module';
+import { AdminModule } from '../routes/admin/admin.module';
 import { Profile } from '../libs/database/entities/profile.entity';
 import { ProfilePokemon } from '../libs/database/entities/profile-pokemon.entity';
 import { Pokemon } from '../libs/database/entities/pokemon.entity';
@@ -37,6 +39,8 @@ import { AuthGuard } from '../libs/guards/auth.guard';
     }),
     ProfileModule,
     PokemonModule,
+    TeamModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
