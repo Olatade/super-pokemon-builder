@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { QueryParams } from '../../libs/database/abstract.repository';
 import { TeamRepository } from './team.repository';
 import { Team } from '../../libs/database/entities/team.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -19,8 +20,15 @@ export class TeamService {
     private readonly teamPokemonRepository: TeamPokemonRepository
   ) {}
 
-  async getTeamsByProfileId(profileId: string): Promise<Team[]> {
-    return await this.teamRepository.findTeamsByProfileId(profileId);
+  async getTeams(
+    user: Profile,
+    query: QueryParams
+  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+    if (user.role === 'admin') {
+      return await this.teamRepository.findAllTeams(query);
+    } else {
+      return await this.teamRepository.findTeamsByProfileId(user.id, query);
+    }
   }
 
   async createTeam(

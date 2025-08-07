@@ -10,6 +10,8 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { Request } from 'express';
@@ -31,9 +33,11 @@ export class TeamController {
 
   @Get()
   @Roles('admin', 'user')
-  async getTeams(@Req() req: AuthenticatedRequest) {
-    const profileId = req.user.id;
-    return await this.teamService.getTeamsByProfileId(profileId);
+  async getTeams(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: Record<string, string>
+  ) {
+    return await this.teamService.getTeams(req.user, query);
   }
 
   @Post()
@@ -42,8 +46,34 @@ export class TeamController {
     @Req() req: AuthenticatedRequest,
     @Body() createTeamDto: CreateTeamDto
   ) {
-    const profileId = req.user.id;
-    return await this.teamService.createTeam(profileId, createTeamDto);
+    let profileIdToUse: string;
+
+    if (req.user.role === 'admin') {
+      if (!createTeamDto.profile_id) {
+        throw new BadRequestException(
+          'Admin must provide a profile_id to create a team.'
+        );
+      }
+      if (createTeamDto.profile_id === req.user.id) {
+        throw new BadRequestException(
+          'Admins cannot create teams for themselves.'
+        );
+      }
+      profileIdToUse = createTeamDto.profile_id;
+    } else {
+      // Regular user
+      profileIdToUse = req.user.id;
+      // Ensure regular users cannot override their profile_id
+      if (
+        createTeamDto.profile_id &&
+        createTeamDto.profile_id !== req.user.id
+      ) {
+        throw new BadRequestException(
+          'Users can only create teams for themselves.'
+        );
+      }
+    }
+    return await this.teamService.createTeam(profileIdToUse, createTeamDto);
   }
 
   @Get(':id')

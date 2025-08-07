@@ -20,14 +20,15 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
   }
 
   async findAll(
-    query: QueryParams
+    query: QueryParams,
+    relations: string[] = []
   ): Promise<{ data: Partial<T>[]; meta: any }> {
     const alias = this.repository.metadata.tableName;
 
     const qb: SelectQueryBuilder<T> = this.repository.createQueryBuilder(alias);
 
     // Pagination defaults
-    const limit = parseInt(query.limit || '10', 10);
+    const limit = parseInt(query.limit || '150', 10);
     const offset = parseInt(query.offset || '0', 10);
 
     // Apply filters (any query param that's not limit, offset, fields)
@@ -47,6 +48,13 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
 
     // Count total (before pagination)
     const totalCount = await qb.getCount();
+
+    // Apply relations
+    if (relations.length > 0) {
+      qb.leftJoinAndSelect(`${alias}.profile`, 'profile');
+      qb.leftJoinAndSelect(`${alias}.teamPokemon`, 'teamPokemon');
+      qb.leftJoinAndSelect('teamPokemon.pokemon', 'pokemon');
+    }
 
     // Apply pagination
     qb.skip(offset).take(limit);

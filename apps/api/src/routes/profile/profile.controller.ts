@@ -35,6 +35,11 @@ export class ProfileController {
   findAll(@Query() query: Record<string, string>) {
     return this.profileService.findAll(query);
   }
+  @Get('me')
+  @Roles('admin', 'user')
+  async findMe(@Request() req) {
+    return this.profileService.findOne(req.user.id);
+  }
 
   @Get(':id')
   @Roles('admin', 'user')
@@ -51,7 +56,7 @@ export class ProfileController {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateProfileDto,
-    @Request() req,
+    @Request() req
   ) {
     const user: Profile = req.user;
     if (user.role === 'user' && user.id !== id) {

@@ -1,6 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { AbstractRepository } from '../../libs/database/abstract.repository';
+import {
+  AbstractRepository,
+  QueryParams,
+} from '../../libs/database/abstract.repository';
 import { Team } from '../../libs/database/entities/team.entity';
 
 @Injectable()
@@ -9,11 +12,17 @@ export class TeamRepository extends AbstractRepository<Team> {
     super(dataSource, Team);
   }
 
-  async findTeamsByProfileId(profileId: string): Promise<Team[]> {
-    return await this.repository.find({
-      where: { profile_id: profileId },
-      relations: ['profile'],
-    });
+  async findTeamsByProfileId(
+    profileId: string,
+    query: QueryParams
+  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+    // Apply the profile_id filter directly to the query object
+    const queryWithProfileFilter = { ...query, profile_id: profileId };
+    return await this.findAll(queryWithProfileFilter, [
+      'profile',
+      'teamPokemon',
+      'teamPokemon.pokemon',
+    ]);
   }
 
   async createTeam(teamData: Partial<Team>): Promise<Team> {
@@ -45,7 +54,21 @@ export class TeamRepository extends AbstractRepository<Team> {
     }
   }
 
+  async findAllTeams(
+    query: QueryParams
+  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+    return await this.findAll(query, [
+      'profile',
+      'teamPokemon',
+      'teamPokemon.pokemon',
+    ]);
+  }
+
   async findById(id: any): Promise<Team | null> {
-    return super.findById(id, ['profile', 'teamPokemon', 'teamPokemon.pokemon']);
+    return super.findById(id, [
+      'profile',
+      'teamPokemon',
+      'teamPokemon.pokemon',
+    ]);
   }
 }
