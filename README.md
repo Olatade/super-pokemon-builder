@@ -1,141 +1,148 @@
-# Super Pokémon Team Builder
+# Assessment Submission – Super Pokémon Team Builder
 
-A Pokémon team-building web application built using an **NX monorepo** structure. This app allows users to browse Pokémon, create teams, and (eventually) manage their profile and authentication. Designed with extensibility in mind for both users and admins.
+## About the Submission
+
+Welcome to the **Super Pokémon Team Builder** project!
+
+This is a **full-stack application** that allows you to:
+
+- Build and manage Pokémon teams
+- Explore various Pokémon data
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **React** – User Interface
+- **Tailwind CSS** – Styling
+- **Redux Toolkit** – UI State Management
+- **TypeScript** – Static typing and improved developer experience
+
+### Backend
+
+- **Node.js** with **NestJS** – API and server logic
+- **PostgreSQL** – Relational database (containerized)
+- **Nx Monorepo** – Unified workspace for frontend and backend
+
+### Development & Deployment
+
+- **Docker** / **Docker Desktop** – Containerization
+
+## 📋 Prerequisites
+
+Before running the project, make sure you have the following installed:
+
+- **Node.js**: `v22.17.0`
+- **npm** (Node Package Manager): `10.9.2`
+- **Docker**
+
+## 🛠️ Installing Prerequisites
+
+1. [Install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+
+Use this command to install node and npm comes with it.
+
+```bash
+nvm install --lts
+```
+
+2. [Install Docker / Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+3. Start Docker Desktop and ensure that it is running
+
+## 🚀 Getting Started with the Repository
+
+Clone this repository and run the commands below to get started:
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+   This will install all the relevant dependencies needed to run the application.
+
+2. **Start development environment**
+
+   ```bash
+   npm run dev
+   ```
+
+   This single command will run three processes:
+
+   - `docker compose up` – Starts the PostgreSQL server.
+   - `nx serve ui` – Starts the React UI application (on port **4200**).
+   - `nx serve api` – Starts the NestJS API application (on port **3000**).
+
+   **Note:** You only need to run `npm run dev`.
+
+3. **Stop all services**
+   ```bash
+   npm run dev:stop
+   ```
 
 ---
 
-## 🧱 Monorepo Structure
+## 📋 Populating the database
 
-This project uses [Nx](https://nx.dev) to manage two applications:
+To populate the database, run `npm run populate:database`
 
-- **UI (React + Tailwind)** — located at `./apps/ui`
-- **API (Next.js with TypeORM + PostgreSQL)** — located at `./apps/api`
+This command does the following:
 
-```bash
-├── apps/
-│   ├── api/    # Next.js API routes and backend logic
-│   └── ui/     # React frontend (Tailwind, Redux planned)
-├── docker-compose.yml
-├── .env
-└──
+1. Fetch and save pokemon data from https://pokeapi.co to a json file
+2. Adds pokemons to the database
+3. Creates user profiles and teams and adds pokemons to the teams
+
+---
+
+### 🔌 Making API calls
+
+The API documentation is available in a [Public postman collection](https://www.postman.com/speeding-crater-749361/workspace/tade-s-public-apis/collection/3891352-94e67b76-e725-423e-b13b-4ae63d9f734a?action=share&creator=3891352)
+
+Somethings you can do:
+
+1. create a user profile: POST - http://localhost:3000/profile
+2. create a team: POST - http://localhost:3000/team
+3. add pokemon to a team - http://localhost:3000/team/:teamid/pokemon
+
+---
+
+### 🔌 Connecting with the Database via a UI
+
+The application will automatically connect to the database, however if you want to connect via a UI layer, following are your variables:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=password
+DB_NAME=super_pokemon_db
 ```
 
-## 🚀Getting Started
+---
 
-## Prerequisites
+## 📋 Using the UI layer - React Application
 
-Node.js (v18+)
-Docker (for PostgreSQL container)
-Nx CLI: `npm install -g nx`
+The UI layer will be available on [http://localhost:4200/](http://localhost:4200/) when you run the application.
 
-## Start the Development Environment
+The UI layer is a simple but powerful application that uses Redux for performance and reactive logic to manage the application state.
 
-`npm run dev`
+### 📋 How to Login
 
-This runs the following concurrently:
-docker-compose up — Starts PostgreSQL container
-nx serve api — Runs the Next.js API app
-nx serve ui — Runs the React frontend
+There are several users available in the database. You can use the following credentials to log in:
 
-## Environment Variables
+| Username | Password |
+| -------- | -------- |
+| user1    | user1    |
+| user2    | user2    |
+| user3    | user3    |
+| user4    | user4    |
 
-Located in .env at the root:
-• DATABASE_URL — PostgreSQL connection string (e.g., postgres://user:pass@localhost:5432/pokemondb)
-• Any other variables for JWT/auth, ports, etc., should be placed here as needed.
-🧩 Features
+---
 
-✅ Implemented:
-• Postgres schema with TypeORM entities
-• Nx monorepo setup
-• Tailwind installed in frontend
-• Dockerized PostgreSQL database
+### 📋 Features
 
-🔜 Planned:
-• User & Admin authentication (JWT-based)
-• Profile creation and management
-• Team building (create, update, delete teams)
-• Add/remove Pokémon from teams
-• Admin dashboard for global stats and moderation
-
-⚙️ Tech Stack
-Frontend - React, TailwindCSS, Redux (planned)
-Backend - Nest.js API Routes
-ORM TypeORM
-DB PostgreSQL (via Docker)
-Infra Nx Monorepo
-
-🗃️ Database Schema Summary
-
-Profile
-• id, username, email, role, created_at
-• One-to-many with Team, ProfilePokemon
-
-Team
-• id, profile_id, name
-• One-to-many with TeamPokemon
-
-Pokemon
-• id, name, image_url, category, height, weight
-• One-to-many with PokemonType, PokemonAbility, ProfilePokemon, TeamPokemon
-
-TeamPokemon
-• team_id, pokemon_id, created_at
-
-ProfilePokemon
-• profile_id, pokemon_id, created_at
-
-PokemonType / PokemonAbility
-• Type and ability metadata per Pokémon
-📡 API Routes (Planned)
-
-Auth
-
-/auth
-• POST /register — Register a user
-• POST /login — Log in and receive token
-• POST /logout — Log out
-• GET /me — Get current authenticated user
-
-Pokemon
-
-/pokemon
-• GET / — List all Pokémon
-• GET /:id — Get specific Pokémon
-
-Profile
-
-/profile
-• GET / — (Admin) List all users
-• GET /:id — (Admin) View user
-• PATCH /:id — Update user info
-• DELETE /:id — Delete user
-
-Team
-
-/team
-• GET / — List current user’s teams
-• POST / — Create a new team
-• GET /:id — Get a specific team
-• PATCH /:id — Update team name/details
-• DELETE /:id — Delete a team
-
-Team Pokémon
-
-/teams/:teamId/pokemon
-• GET / — List Pokémon in a team
-• POST / — Add a Pokémon (max 6)
-• PATCH /:pokemonId — Edit Pokémon in team
-• DELETE /:pokemonId — Remove Pokémon from team
-
-Admin (Restricted)
-
-/admin
-• GET /stats — View global stats
-• GET /teams — View all user teams
-• GET /pokemons — View all Pokémon in all teams
-
-🔐 Authentication (Planned)
-
-JWT-based token authentication is planned. No auth logic is currently implemented. There will be two roles:
-• user — default role
-• admin — elevated permissions to view/delete profiles, view all teams, etc.
+- **Create Profile**: Create your own user profile.
+- **Login**: Login with your profile.
+- **Create a Team**: Create a new Pokémon team.
+- **Manage Team**: Add up to six Pokémon to your team and remove them.
