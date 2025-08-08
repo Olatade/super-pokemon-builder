@@ -1,50 +1,50 @@
-import NxWelcome from './nx-welcome';
+import { Navbar } from '../components/Navbar';
+import { LoginPage } from '../features/auth/LoginPage';
 
-import { Route, Routes, Link } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  BrowserRouter as Router,
+  Navigate,
+} from 'react-router-dom';
+import { useAppSelector } from '../features/withTypes';
+import { selectCurrentUsername } from '../features/auth/authSlice';
+import { HomePage } from '../features/team/TeamsMainPage';
+import { ManageTeamPage } from '../features/team/ManageTeamPage';
+import { CreateProfilePage } from '../features/auth/CreateProfile';
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const username = useAppSelector(selectCurrentUsername);
+
+  if (!username) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 export function App() {
   return (
-    <div>
-      <div className="bg-red-50">THis is TAde</div>
-      <NxWelcome title="ui" />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
+    <Router>
+      <Navbar />
+      <div>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/create-profile" element={<CreateProfilePage />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Routes>
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/teams/:teamId" element={<ManageTeamPage />} />
+                </Routes>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </div>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
-      </Routes>
-      {/* END: routes */}
-    </div>
+    </Router>
   );
 }
 

@@ -1,6 +1,7 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class CreatePokemonDto {
+  @IsNotEmpty()
   @IsString()
   name: string;
 
@@ -8,12 +9,15 @@ export class CreatePokemonDto {
   @IsOptional()
   image_url?: string;
 
+  @IsNotEmpty()
   @IsString()
   category: string;
 
+  @IsNotEmpty()
   @IsNumber()
   height: number;
 
+  @IsNotEmpty()
   @IsNumber()
   weight: number;
 }

@@ -9,8 +9,4 @@ export class AdminService {
   getStats() {
     return this.adminRepository.getStats();
   }
-
-  async getAllTeams(query: QueryParams) {
-    return this.adminRepository.getAllTeams(query);
-  }
 }

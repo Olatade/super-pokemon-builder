@@ -1,15 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { ProfileRepository } from './profile.repository';
 import { QueryParams } from '../../libs/database/abstract.repository';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { QueryFailedError } from 'typeorm';
 
 @Injectable()
 export class ProfileService {
   constructor(private readonly profilesRepo: ProfileRepository) {}
 
   async create(dto: CreateProfileDto) {
-    return this.profilesRepo.create(dto);
+    try {
+      return await this.profilesRepo.create(dto);
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        if (
+          error.message.includes(
+            'duplicate key value violates unique constraint "UQ_'
+          )
+        ) {
+          throw new ConflictException('username or password exists');
+        }
+      }
+      throw error; // Re-throw other errors
+    }
   }
 
   async findAll(query: QueryParams) {

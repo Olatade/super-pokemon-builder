@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { TeamPokemon } from './team-pokemon.entity';
@@ -19,6 +20,9 @@ export class Team {
 
   @Column()
   name: string;
+
+  @CreateDateColumn()
+  created_at: Date;
 
   @ManyToOne(() => Profile, (profile) => profile.teams, {
     onDelete: 'CASCADE',

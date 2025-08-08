@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { RolesGuard } from '../../libs/guards/roles.guard';
 import { Roles } from '../../libs/decorators/roles.decorator';
+import { Public } from '../../libs/decorators/public.decorator';
 import { Profile } from '../../libs/database/entities/profile.entity';
 
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -24,8 +25,8 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
+  @Public()
   @Post()
-  @Roles('admin', 'user')
   create(@Body() dto: CreateProfileDto) {
     return this.profileService.create(dto);
   }
@@ -34,6 +35,11 @@ export class ProfileController {
   @Roles('admin')
   findAll(@Query() query: Record<string, string>) {
     return this.profileService.findAll(query);
+  }
+  @Get('me')
+  @Roles('admin', 'user')
+  async findMe(@Request() req) {
+    return this.profileService.findOne(req.user.id);
   }
 
   @Get(':id')
@@ -51,7 +57,7 @@ export class ProfileController {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateProfileDto,
-    @Request() req,
+    @Request() req
   ) {
     const user: Profile = req.user;
     if (user.role === 'user' && user.id !== id) {
