@@ -24,7 +24,7 @@ export class ProfileService {
             'duplicate key value violates unique constraint "UQ_'
           )
         ) {
-          throw new ConflictException('username or password exists');
+          throw new ConflictException('username or email exists');
         }
       }
       throw error; // Re-throw other errors

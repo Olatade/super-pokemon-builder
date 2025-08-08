@@ -50,10 +50,11 @@ export abstract class AbstractRepository<T extends ObjectLiteral> {
     const totalCount = await qb.getCount();
 
     // Apply relations
-    if (relations.length > 0) {
-      qb.leftJoinAndSelect(`${alias}.profile`, 'profile');
-      qb.leftJoinAndSelect(`${alias}.teamPokemon`, 'teamPokemon');
-      qb.leftJoinAndSelect('teamPokemon.pokemon', 'pokemon');
+    for (const relation of relations) {
+      const relationParts = relation.split('.');
+      const aliasName = relationParts.length > 1 ? relationParts[relationParts.length - 1] : relation;
+      const propertyName = relationParts.length > 1 ? relation : `${alias}.${relation}`;
+      qb.leftJoinAndSelect(propertyName, aliasName);
     }
 
     // Apply pagination

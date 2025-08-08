@@ -12,6 +12,7 @@ import {
   UseGuards,
   Query,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -61,15 +62,6 @@ export class TeamController {
     } else {
       // Regular user
       profileIdToUse = req.user.id;
-      // Ensure regular users cannot override their profile_id
-      if (
-        createTeamDto.profile_id &&
-        createTeamDto.profile_id !== req.user.id
-      ) {
-        throw new BadRequestException(
-          'Users can only create teams for themselves.'
-        );
-      }
     }
     return await this.teamService.createTeam(profileIdToUse, createTeamDto);
   }
@@ -80,7 +72,9 @@ export class TeamController {
     @Req() req: AuthenticatedRequest,
     @Param('id') teamId: string
   ) {
-    return await this.teamService.getTeamById(req.user, teamId);
+    const team = await this.teamService.getTeamById(req.user, teamId);
+
+    return team;
   }
 
   @Patch(':id')

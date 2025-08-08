@@ -6,11 +6,11 @@ export class PokemonService {
   constructor(private readonly pokemonRepo: PokemonRepository) {}
 
   async findAll(query: QueryParams) {
-    return this.pokemonRepo.findAll(query);
+    return this.pokemonRepo.findAll(query, ['types', 'abilities']);
   }
 
   async findOne(id: string) {
-    const pokemon = await this.pokemonRepo.findById(id);
+    const pokemon = await this.pokemonRepo.findById(id, ['types', 'abilities']);
     if (!pokemon) throw new NotFoundException('Pokemon not found');
     return pokemon;
   }

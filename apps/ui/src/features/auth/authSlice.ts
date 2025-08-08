@@ -128,9 +128,9 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.id = action.payload.id ?? null;
-        state.username = action.payload.username ?? null;
+        state.username = action.meta.arg.username;
         state.email = action.payload.email ?? null;
-        state.password = action.payload.password ?? null;
+        state.password = action.meta.arg.password;
         state.created_at = action.payload.created_at
           ? action.payload.created_at.toString()
           : null;
@@ -146,9 +146,9 @@ export const authSlice = createSlice({
       .addCase(createProfile.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.id = action.payload.id ?? null;
-        state.username = action.payload.username ?? null;
-        state.email = action.payload.email ?? null;
-        state.password = action.payload.password ?? null;
+        state.username = action.meta.arg.username;
+        state.email = action.meta.arg.email;
+        state.password = action.meta.arg.password;
         state.created_at = action.payload.created_at
           ? action.payload.created_at.toString()
           : null;

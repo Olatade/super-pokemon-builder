@@ -38,7 +38,7 @@ Before running the project, make sure you have the following installed:
 
 ## 🛠️ Installing Prerequisites
 
-1. <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating" target="_blank">Install nvm</a>
+1. <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating" target="_blank">Install nvm</a> or just install node
 
 Use this command to install node and npm comes with it.
 
@@ -47,12 +47,6 @@ nvm install --lts
 ```
 
 2. <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Install Docker / Docker Desktop</a>
-
-3. Install NX console
-
-```bash
-npm add --global nx
-```
 
 3. Start Docker Desktop and ensure that it is running
 
@@ -68,7 +62,15 @@ Clone this repository and run the commands below to get started:
 
    This will install all the relevant dependencies needed to run the application.
 
-2. **Start development environment (make sure docker is running) **
+2. **Install nx console**
+
+   ```bash
+   npm add --global nx
+   ```
+
+   This will enable you to run the nx commands needed to start the application (you might have to restart your terminal after doing this)
+
+3. **Start development environment (make sure docker is running) **
 
    ```bash
    npm run dev
@@ -82,7 +84,7 @@ Clone this repository and run the commands below to get started:
 
    **Note:** You only need to run `npm run dev`.
 
-3. **Stop all services**
+4. **Stop all services**
    ```bash
    npm run dev:stop
    ```
