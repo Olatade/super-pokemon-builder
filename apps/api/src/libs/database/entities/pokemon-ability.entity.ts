@@ -16,7 +16,7 @@ export class PokemonAbility {
   pokemon_id: string;
 
   @Column()
-  ability: string; // e.g., "overgrow"
+  ability: string;
 
   @ManyToOne(() => Pokemon, (pokemon) => pokemon.abilities, {
     onDelete: 'CASCADE',

@@ -19,6 +19,7 @@ import { Profile } from '../../libs/database/entities/profile.entity';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileService } from './profile.service';
+import { AuthenticatedRequest } from '../../libs/guards/auth.guard';
 
 @Controller('profile')
 @UseGuards(RolesGuard)
@@ -38,14 +39,15 @@ export class ProfileController {
   }
   @Get('me')
   @Roles('admin', 'user')
-  async findMe(@Request() req) {
+  async findMe(@Request() req: AuthenticatedRequest) {
     return this.profileService.findOne(req.user.id);
   }
 
   @Get(':id')
   @Roles('admin', 'user')
-  async findOne(@Param('id') id: string, @Request() req) {
+  async findOne(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
     const user: Profile = req.user;
+    // prevent a non-admin user from viewing other user profiles
     if (user.role === 'user' && user.id !== id) {
       throw new ForbiddenException('You can only view your own profile.');
     }
@@ -57,9 +59,10 @@ export class ProfileController {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateProfileDto,
-    @Request() req
+    @Request() req: AuthenticatedRequest
   ) {
     const user: Profile = req.user;
+    // prevent a non-admin user from updating other user's profile
     if (user.role === 'user' && user.id !== id) {
       throw new ForbiddenException('You can only update your own profile.');
     }
@@ -68,8 +71,9 @@ export class ProfileController {
 
   @Delete(':id')
   @Roles('admin', 'user')
-  async remove(@Param('id') id: string, @Request() req) {
+  async remove(@Param('id') id: string, @Request() req: AuthenticatedRequest) {
     const user: Profile = req.user;
+    // prevent a non-admin user from deleting other user's profile
     if (user.role === 'user' && user.id !== id) {
       throw new ForbiddenException('You can only delete your own profile.');
     }

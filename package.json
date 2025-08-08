@@ -5,10 +5,8 @@
   "scripts": {
     "dev": "concurrently \"docker-compose up\" \"nx serve api\" \"nx serve ui\"",
     "dev:stop": "docker-compose down && kill $(lsof -t -i:3000) && kill $(lsof -t -i:4200)",
-    "migration:generate": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:generate -d apps/api/src/data-source.ts",
-    "migration:run": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:run -d apps/api/src/data-source.ts",
-    "migration:revert": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:revert -d apps/api/src/data-source.ts",
-    "populate:database": "ts-node --project apps/api/tsconfig.app.json -r tsconfig-paths/register apps/api/src/libs/database/seed/populate-database.ts"
+    "populate:database": "ts-node --project apps/api/tsconfig.app.json -r tsconfig-paths/register apps/api/src/libs/database/seed/populate-database.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js migration:generate -d apps/api/src/data-source.ts"
   },
   "private": true,
   "devDependencies": {

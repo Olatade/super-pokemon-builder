@@ -9,11 +9,15 @@ import { ProfileService } from '../../routes/profile/profile.service';
 import { Profile } from '../database/entities/profile.entity';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
+export interface AuthenticatedRequest extends Request {
+  user: Profile;
+}
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly profileService: ProfileService,
-    private reflector: Reflector,
+    private reflector: Reflector
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -21,6 +25,8 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
+    // skip guarding public routes
     if (isPublic) {
       return true;
     }
@@ -47,7 +53,10 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const user: Profile = await this.profileService.validateUser(username, password);
+    const user: Profile = await this.profileService.validateUser(
+      username,
+      password
+    );
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');

@@ -17,6 +17,7 @@ export class ProfileService {
     try {
       return await this.profilesRepo.create(dto);
     } catch (error) {
+      // provide custom error when a duplicate profile is created
       if (error instanceof QueryFailedError) {
         if (
           error.message.includes(

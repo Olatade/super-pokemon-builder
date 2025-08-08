@@ -9,7 +9,7 @@ import { Team } from '../../libs/database/entities/team.entity';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Profile } from '../../libs/database/entities/profile.entity';
-import { AddPokemonDto } from './dto/add-pokemon.dto';
+import { AddPokemonToTeamDto } from './dto/add-pokemon.dto';
 import { TeamPokemon } from '../../libs/database/entities/team-pokemon.entity';
 import { TeamPokemonRepository } from './team-pokemon.repository';
 
@@ -20,10 +20,8 @@ export class TeamService {
     private readonly teamPokemonRepository: TeamPokemonRepository
   ) {}
 
-  async getTeams(
-    user: Profile,
-    query: QueryParams
-  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+  async getTeams(user: Profile, query: QueryParams) {
+    // Only show all teams for admin requests
     if (user.role === 'admin') {
       return await this.teamRepository.findAllTeams(query);
     } else {
@@ -31,17 +29,14 @@ export class TeamService {
     }
   }
 
-  async createTeam(
-    profileId: string,
-    createTeamDto: CreateTeamDto
-  ): Promise<Team> {
+  async createTeam(profileId: string, createTeamDto: CreateTeamDto) {
     const teamData = { ...createTeamDto, profile_id: profileId };
     return await this.teamRepository.createTeam(teamData);
   }
 
-  async getTeamById(user: Profile, teamId: string): Promise<Team> {
+  async getTeamById(user: Profile, teamId: string) {
     let team: Team | null;
-
+    //prevent non-admin from getting other user's teams
     if (user.role === 'admin') {
       team = await this.teamRepository.findById(teamId);
     } else {
@@ -61,22 +56,19 @@ export class TeamService {
     user: Profile,
     teamId: string,
     updateTeamDto: UpdateTeamDto
-  ): Promise<Team> {
+  ) {
     const team = await this.getTeamById(user, teamId);
 
     Object.assign(team, updateTeamDto);
     return await this.teamRepository.save(team);
   }
 
-  async deleteTeam(user: Profile, teamId: string): Promise<void> {
+  async deleteTeam(user: Profile, teamId: string) {
     const team = await this.getTeamById(user, teamId);
     await this.teamRepository.deleteTeam(team.id);
   }
 
-  async getPokemonsInTeam(
-    user: Profile,
-    teamId: string
-  ): Promise<TeamPokemon[]> {
+  async getPokemonsInTeam(user: Profile, teamId: string) {
     const team = await this.getTeamById(user, teamId);
     return team.teamPokemon;
   }
@@ -84,8 +76,8 @@ export class TeamService {
   async addPokemonToTeam(
     user: Profile,
     teamId: string,
-    addPokemonDto: AddPokemonDto
-  ): Promise<Team> {
+    addPokemonDto: AddPokemonToTeamDto
+  ) {
     const team = await this.getTeamById(user, teamId);
 
     // don't allow add if team already has 6 pokemons
@@ -104,8 +96,12 @@ export class TeamService {
     return await this.getTeamById(user, teamId);
   }
 
-  async removePokemonFromTeam(user: Profile, teamId: string, pokemonId: string) {
+  async removePokemonFromTeam(
+    user: Profile,
+    teamId: string,
+    pokemonId: string
+  ) {
     await this.getTeamById(user, teamId);
-    return  this.teamPokemonRepository.deletePokemonFromTeam(teamId, pokemonId);
+    return this.teamPokemonRepository.deletePokemonFromTeam(teamId, pokemonId);
   }
 }

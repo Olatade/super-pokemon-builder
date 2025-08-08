@@ -38,7 +38,7 @@ Before running the project, make sure you have the following installed:
 
 ## 🛠️ Installing Prerequisites
 
-1. [Install nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+1. <a href="https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating" target="_blank">Install nvm</a>
 
 Use this command to install node and npm comes with it.
 
@@ -46,7 +46,13 @@ Use this command to install node and npm comes with it.
 nvm install --lts
 ```
 
-2. [Install Docker / Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. <a href="https://www.docker.com/products/docker-desktop/" target="_blank">Install Docker / Docker Desktop</a>
+
+3. Install NX console
+
+```bash
+npm add --global nx
+```
 
 3. Start Docker Desktop and ensure that it is running
 
@@ -62,7 +68,7 @@ Clone this repository and run the commands below to get started:
 
    This will install all the relevant dependencies needed to run the application.
 
-2. **Start development environment**
+2. **Start development environment (make sure docker is running) **
 
    ```bash
    npm run dev
@@ -98,6 +104,8 @@ This command does the following:
 ### 🔌 Making API calls
 
 The API documentation is available in a [Public postman collection](https://www.postman.com/speeding-crater-749361/workspace/tade-s-public-apis/collection/3891352-94e67b76-e725-423e-b13b-4ae63d9f734a?action=share&creator=3891352)
+
+NOTE: The api uses basic authentication, check the "How to Login" section below for user passwords or create a profile via an api call and then use the username and password to make your api requests
 
 Somethings you can do:
 

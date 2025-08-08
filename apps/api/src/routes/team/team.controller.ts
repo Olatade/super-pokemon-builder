@@ -14,17 +14,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
-import { Request } from 'express';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
-import { AddPokemonDto } from './dto/add-pokemon.dto';
-import { Profile } from '../../libs/database/entities/profile.entity';
+import { AddPokemonToTeamDto } from './dto/add-pokemon.dto';
 import { RolesGuard } from '../../libs/guards/roles.guard';
 import { Roles } from '../../libs/decorators/roles.decorator';
-
-interface AuthenticatedRequest extends Request {
-  user: Profile;
-}
+import { AuthenticatedRequest } from '../../libs/guards/auth.guard';
 
 @Controller('team')
 @UseGuards(RolesGuard)
@@ -48,12 +43,15 @@ export class TeamController {
   ) {
     let profileIdToUse: string;
 
+    // admins must provide profile ids when creating teams because admins are not allowed to have teams
     if (req.user.role === 'admin') {
+      // throw error if admin does not provide profile id
       if (!createTeamDto.profile_id) {
         throw new BadRequestException(
           'Admin must provide a profile_id to create a team.'
         );
       }
+      // throw error if admin provides their own profile id
       if (createTeamDto.profile_id === req.user.id) {
         throw new BadRequestException(
           'Admins cannot create teams for themselves.'
@@ -119,7 +117,7 @@ export class TeamController {
   async addPokemonToTeam(
     @Req() req: AuthenticatedRequest,
     @Param('teamId') teamId: string,
-    @Body() addPokemonDto: AddPokemonDto
+    @Body() addPokemonDto: AddPokemonToTeamDto
   ) {
     return await this.teamService.addPokemonToTeam(
       req.user,

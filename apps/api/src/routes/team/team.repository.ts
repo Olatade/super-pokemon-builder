@@ -12,10 +12,7 @@ export class TeamRepository extends AbstractRepository<Team> {
     super(dataSource, Team);
   }
 
-  async findTeamsByProfileId(
-    profileId: string,
-    query: QueryParams
-  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+  async findTeamsByProfileId(profileId: string, query: QueryParams) {
     // Apply the profile_id filter directly to the query object
     const queryWithProfileFilter = { ...query, profile_id: profileId };
     return await this.findAll(queryWithProfileFilter, [
@@ -30,33 +27,28 @@ export class TeamRepository extends AbstractRepository<Team> {
     const savedTeam = await this.repository.save(newTeam);
 
     // After saving, find the newly created team and load its relations
-    // This will ensure that the 'profile' relation is populated in the returned object
+    // so that the 'profile' relation is populated in the returned object
     return await this.repository.findOne({
       where: { id: savedTeam.id },
-      relations: ['profile'], // Explicitly load profile for the response
+      relations: ['profile'],
     });
   }
 
-  async findOneByProfileIdAndTeamId(
-    profileId: string,
-    teamId: string
-  ): Promise<Team | null> {
+  async findOneByProfileIdAndTeamId(profileId: string, teamId: string) {
     return await this.repository.findOne({
       where: { id: teamId, profile_id: profileId },
       relations: ['profile', 'teamPokemon', 'teamPokemon.pokemon'],
     });
   }
 
-  async deleteTeam(teamId: string): Promise<void> {
+  async deleteTeam(teamId: string) {
     const result = await this.repository.delete(teamId);
     if (result.affected === 0) {
       throw new NotFoundException(`Team with ID ${teamId} not found.`);
     }
   }
 
-  async findAllTeams(
-    query: QueryParams
-  ): Promise<{ data: Partial<Team>[]; meta: any }> {
+  async findAllTeams(query: QueryParams) {
     return await this.findAll(query, [
       'profile',
       'teamPokemon',
@@ -64,7 +56,7 @@ export class TeamRepository extends AbstractRepository<Team> {
     ]);
   }
 
-  async findById(id: any): Promise<Team | null> {
+  async findById(id: string) {
     return super.findById(id, [
       'profile',
       'teamPokemon',
